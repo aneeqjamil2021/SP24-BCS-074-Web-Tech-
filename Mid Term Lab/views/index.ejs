@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Electronics, Cars, Fashion, Collectibles & More | eBay </title>
     <link rel="stylesheet" href="/css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 <body>
 
@@ -30,11 +31,9 @@
         <div class="logo">
             <span style="color:#e53238">e</span><span style="color:#0064d2">b</span><span style="color:#f5af02">a</span><span style="color:#86b817">y</span>
         </div>
-        
         <div class="shop-category">
             Shop by<br>category ▾
         </div>
-
         <div class="search-container">
             <div class="search-box">
                 <span class="search-icon">🔍</span>
@@ -54,7 +53,6 @@
             <span></span>
             <span></span>
         </div>
-
         <div class="nav-links" id="nav-links">
             <a href="#">Saved</a>
             <a href="#">Electronics</a>
@@ -123,13 +121,13 @@
         </div>
     </section>
 
+    <!-- Today's Deals (static) -->
     <section class="deals section-padding">
         <div class="deals-header">
             <h2>Today's Deals</h2>
             <p>All with free shipping</p>
         </div>
         <div class="products">
-            
             <div class="product">
                 <div class="product-img-box">
                     <span class="heart-icon">♡</span>
@@ -143,7 +141,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="product">
                 <div class="product-img-box">
                     <span class="heart-icon">♡</span>
@@ -157,7 +154,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="product">
                 <div class="product-img-box">
                     <span class="heart-icon">♡</span>
@@ -171,7 +167,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="product">
                 <div class="product-img-box">
                     <span class="heart-icon">♡</span>
@@ -185,9 +180,54 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </section>
+
+    <!-- ===== FEATURED DEALS — dynamically populated via AJAX ===== -->
+    <section class="deals section-padding" id="featured-deals-section">
+        <div class="deals-header">
+            <h2>Featured Deals</h2>
+            <p>Handpicked just for you</p>
+        </div>
+
+        <!-- Skeleton loader shown while fetching -->
+        <div class="products" id="featured-products">
+            <div class="skeleton-card"></div>
+            <div class="skeleton-card"></div>
+            <div class="skeleton-card"></div>
+            <div class="skeleton-card"></div>
+        </div>
+
+        <!-- Error state (hidden by default) -->
+        <div id="featured-error" class="fetch-error" style="display:none;">
+            <p>⚠️ Could not load featured deals. Please try again later.</p>
+        </div>
+    </section>
+
+    <!-- ===== QUICK VIEW MODAL ===== -->
+    <div id="quick-view-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div class="modal-box">
+            <button class="modal-close" id="modal-close" aria-label="Close">&times;</button>
+            <div class="modal-inner">
+                <div class="modal-img-wrap">
+                    <img id="modal-img" src="" alt="">
+                </div>
+                <div class="modal-details">
+                    <span id="modal-category" class="modal-category-tag"></span>
+                    <h2 id="modal-title"></h2>
+                    <div class="modal-rating">
+                        <span id="modal-stars" class="stars"></span>
+                        <span id="modal-rating-count" class="rating-count"></span>
+                    </div>
+                    <p id="modal-desc" class="modal-desc"></p>
+                    <div class="modal-price-row">
+                        <span id="modal-price" class="modal-price"></span>
+                        <button class="btn-dark modal-add-btn">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <footer class="footer">
         <div class="footer-container">
@@ -263,6 +303,8 @@
             <p>Copyright © 1995-2026 eBay Inc. All Rights Reserved. <a href="#">Accessibility</a>, <a href="#">User Agreement</a>, <a href="#">Privacy</a>, <a href="#">Payments Terms of Use</a>, <a href="#">Cookies</a>, <a href="#">CA Privacy Notice</a>, <a href="#">Your Privacy Choices</a> and <a href="#">AdChoice</a></p>
         </div>
     </footer>
+
+    <script src="/js/featured.js"></script>
 
 </body>
 </html>
