@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - eBay Clone</title>
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+    <div class="admin-wrapper">
+        <aside class="admin-sidebar">
+            <h2>Admin Panel</h2>
+            <a href="/admin">Dashboard</a>
+            <a href="/admin/products/new">Add Product</a>
+            <a href="/" target="_blank">View Site</a>
+            <a href="/logout" style="color: #ff4444;">Logout</a>
+        </aside>
+        <main class="admin-main">
+            <% if (success_msg && success_msg.length > 0) { %>
+                <div style="background-color: #d4edda; color: #155724; padding: 10px; margin-bottom: 20px; border-radius: 4px;"><%= success_msg %></div>
+            <% } %>
+            <% if (error_msg && error_msg.length > 0) { %>
+                <div style="background-color: #f8d7da; color: #721c24; padding: 10px; margin-bottom: 20px; border-radius: 4px;"><%= error_msg %></div>
+            <% } %>
+            <%- body %>
+        </main>
+    </div>
+</body>
+</html>
