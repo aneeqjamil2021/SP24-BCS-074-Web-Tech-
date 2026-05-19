@@ -1,0 +1,92 @@
+<h2>Sales Dashboard</h2>
+
+<div class="dashboard-cards" style="display: flex; gap: 20px; margin-bottom: 20px;">
+    <div class="card"
+        style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); flex: 1;">
+        <h3>Total Revenue</h3>
+        <p id="total-revenue" style="font-size: 24px; font-weight: bold; color: #28a745;">$<%= totalRevenue.toFixed(2)
+                %>
+        </p>
+    </div>
+    <div class="card"
+        style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); flex: 1;">
+        <h3>Total Orders</h3>
+        <p id="total-orders" style="font-size: 24px; font-weight: bold; color: #007bff;">
+            <%= totalOrders %>
+        </p>
+    </div>
+</div>
+
+<h3>Recent Transactions</h3>
+<table id="recent-orders-table" class="admin-table"
+    style="width: 100%; border-collapse: collapse; background: white; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+    <thead>
+        <tr style="background: #f8f9fa; text-align: left;">
+            <th style="padding: 12px; border-bottom: 2px solid #dee2e6;">Order ID</th>
+            <th style="padding: 12px; border-bottom: 2px solid #dee2e6;">Customer</th>
+            <th style="padding: 12px; border-bottom: 2px solid #dee2e6;">Total</th>
+            <th style="padding: 12px; border-bottom: 2px solid #dee2e6;">Status</th>
+            <th style="padding: 12px; border-bottom: 2px solid #dee2e6;">Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% recentOrders.forEach(order=> { %>
+            <tr>
+                <td style="padding: 12px; border-bottom: 1px solid #dee2e6;">
+                    <%= order._id %>
+                </td>
+                <td style="padding: 12px; border-bottom: 1px solid #dee2e6;">
+                    <%= order.user ? order.user.name : 'Unknown User' %>
+                </td>
+                <td style="padding: 12px; border-bottom: 1px solid #dee2e6;">$<%= order.totalPrice.toFixed(2) %>
+                </td>
+                <td style="padding: 12px; border-bottom: 1px solid #dee2e6;">
+                    <span
+                        style="padding: 4px 8px; border-radius: 4px; background: <%= order.status === 'Completed' ? '#d4edda' : '#fff3cd' %>; color: <%= order.status === 'Completed' ? '#155724' : '#856404' %>;">
+                        <%= order.status %>
+                    </span>
+                </td>
+                <td style="padding: 12px; border-bottom: 1px solid #dee2e6;">
+                    <%= new Date(order.createdAt).toLocaleString() %>
+                </td>
+            </tr>
+            <% }) %>
+    </tbody>
+</table>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        setInterval(function () {
+            $.getJSON('/api/sales-data', function (data) {
+                $('#total-revenue').text('$' + data.totalRevenue.toFixed(2));
+                $('#total-orders').text(data.totalOrders);
+
+                let tbodyHtml = '';
+                data.recentOrders.forEach(function (order) {
+                    let userName = order.user ? order.user.name : 'Unknown User';
+                    let date = new Date(order.createdAt).toLocaleString();
+                    let statusBg = order.status === 'Completed' ? '#d4edda' : '#fff3cd';
+                    let statusColor = order.status === 'Completed' ? '#155724' : '#856404';
+
+                    tbodyHtml += `
+                        <tr>
+                            <td style="padding: 12px; border-bottom: 1px solid #dee2e6;">${order._id}</td>
+                            <td style="padding: 12px; border-bottom: 1px solid #dee2e6;">${userName}</td>
+                            <td style="padding: 12px; border-bottom: 1px solid #dee2e6;">$${order.totalPrice.toFixed(2)}</td>
+                            <td style="padding: 12px; border-bottom: 1px solid #dee2e6;">
+                                <span style="padding: 4px 8px; border-radius: 4px; background: ${statusBg}; color: ${statusColor};">
+                                    ${order.status}
+                                </span>
+                            </td>
+                            <td style="padding: 12px; border-bottom: 1px solid #dee2e6;">${date}</td>
+                        </tr>
+                    `;
+                });
+                $('#recent-orders-table tbody').html(tbodyHtml);
+            }).fail(function (err) {
+                console.error("Error fetching live sales data: ", err);
+            });
+        }, 10000);
+    });
+</script>

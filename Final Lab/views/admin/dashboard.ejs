@@ -1,0 +1,40 @@
+<div class="admin-header">
+    <h1>Products Dashboard</h1>
+    <a href="/admin/products/new" class="btn btn-primary">Add New Product</a>
+</div>
+
+<table class="admin-table">
+    <thead>
+        <tr>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% if (products.length === 0) { %>
+            <tr>
+                <td colspan="6" style="text-align: center;">No products found.</td>
+            </tr>
+        <% } else { %>
+            <% products.forEach(product => { %>
+                <tr>
+                    <td><img src="<%= product.image %>" alt="<%= product.name %>"></td>
+                    <td><%= product.name %></td>
+                    <td><%= product.category %></td>
+                    <td>$<%= product.price.toFixed(2) %></td>
+                    <td><%= product.stock %></td>
+                    <td>
+                        <a href="/admin/products/<%= product._id %>/edit" class="btn btn-warning">Edit</a>
+                        <form action="/admin/products/<%= product._id %>/delete" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this product?');">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            <% }) %>
+        <% } %>
+    </tbody>
+</table>
